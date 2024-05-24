@@ -1,0 +1,40 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        URLShortener urlShortener = new URLShortener();
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("1. Shorten URL");
+            System.out.println("2. Expand URL");
+            System.out.println("3. Exit");
+            System.out.print("Choose an option: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();  // Consume newline
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter the long URL: ");
+                    String longUrl = scanner.nextLine();
+                    String shortUrl = urlShortener.shortenURL(longUrl);
+                    System.out.println("Short URL: " + shortUrl);
+                    break;
+                case 2:
+                    System.out.print("Enter the short URL: ");
+                    shortUrl = scanner.nextLine();
+                    try {
+                        longUrl = urlShortener.expandURL(shortUrl);
+                        System.out.println("Long URL: " + longUrl);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 3:
+                    System.out.println("Exiting...");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+}
