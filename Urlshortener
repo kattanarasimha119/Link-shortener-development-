@@ -1,0 +1,40 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
+public class URLShortener {
+    private static final String CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    private static final int SHORT_URL_LENGTH = 6;
+    private Map<String, String> urlMap = new HashMap<>();
+    private Map<String, String> reverseUrlMap = new HashMap<>();
+    private Random random = new Random();
+
+    public String shortenURL(String longUrl) {
+        if (reverseUrlMap.containsKey(longUrl)) {
+            return reverseUrlMap.get(longUrl);
+        }
+        String shortUrl;
+        do {
+            shortUrl = generateShortUrl();
+        } while (urlMap.containsKey(shortUrl));
+        urlMap.put(shortUrl, longUrl);
+        reverseUrlMap.put(longUrl, shortUrl);
+        return shortUrl;
+    }
+
+    public String expandURL(String shortUrl) {
+        if (urlMap.containsKey(shortUrl)) {
+            return urlMap.get(shortUrl);
+        } else {
+            throw new IllegalArgumentException("Short URL does not exist: " + shortUrl);
+        }
+    }
+
+    private String generateShortUrl() {
+        StringBuilder shortUrl = new StringBuilder(SHORT_URL_LENGTH);
+        for (int i = 0; i < SHORT_URL_LENGTH; i++) {
+            shortUrl.append(CHARACTERS.charAt(random.nextInt(CHARACTERS.length())));
+        }
+        return shortUrl.toString();
+    }
+}
